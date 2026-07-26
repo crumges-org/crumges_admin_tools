@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_journal_move_wizard_form" model="ir.ui.view">
+        <field name="name">journal.move.wizard.form</field>
+        <field name="model">journal.move.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Mover Asientos de Diario">
+                <div class="alert alert-warning" role="alert">
+                    <strong>¡Acción Destructiva!</strong> Estás a punto de trasladar forzosamente <field name="move_count" readonly="1" nolabel="1" class="font-weight-bold"/> asientos a otro diario, evadiendo las restricciones de Odoo.
+                </div>
+                <group>
+                    <field name="new_journal_id" options="{'no_create': True}"/>
+                </group>
+                <footer>
+                    <button name="action_apply_move" string="Trasladar Asientos" type="object" class="btn-danger"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_journal_move_wizard" model="ir.actions.act_window">
+        <field name="name">Mover a otro Diario</field>
+        <field name="res_model">journal.move.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <!-- Solo desarrolladores/superusuarios pueden ver esta acción -->
+        <field name="groups_id" eval="[(4, ref('base.group_no_one'))]"/>
+    </record>
+</odoo>
