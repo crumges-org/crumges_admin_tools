@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="param_url" model="ir.config_parameter">
+        <field name="key">crumges_autogestion.url</field>
+        <field name="value">/autogestion/</field>
+    </record>
+    <record id="param_show_status" model="ir.config_parameter">
+        <field name="key">crumges_autogestion.show_status</field>
+        <field name="value">True</field>
+    </record>
+</odoo>
