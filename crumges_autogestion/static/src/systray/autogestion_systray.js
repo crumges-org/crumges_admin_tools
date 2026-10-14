@@ -55,6 +55,12 @@ export class AutogestionSystray extends Component {
         this.state.loading = true;
         try {
             const res = await browser.fetch(`${this.cfg.url}api/summary/`, { credentials: "include" });
+            if (res.status === 401) {
+                // Sin sesión en Autogestión: no se muestra el estado del servidor, solo la invitación a ingresar
+                this.state.data = { authenticated: false, status: "unknown", reasons: [], instances: [], resources: {} };
+                this.state.error = null;
+                return;
+            }
             if (!res.ok) {
                 throw new Error(String(res.status));
             }
@@ -79,11 +85,17 @@ export class AutogestionSystray extends Component {
 
     get statusTitle() {
         const d = this.state.data;
+        if (this.cfg.neutralized) {
+            return "Autogestión (se abre en Producción)";
+        }
         if (this.state.error) {
             return this.state.error;
         }
         if (!d) {
             return "Autogestión";
+        }
+        if (!d.authenticated) {
+            return "Autogestión: ingresá para ver el estado del servidor";
         }
         return d.reasons?.length ? `Autogestión: ${d.reasons.join(", ")}` : "Autogestión: todo en orden";
     }
@@ -115,7 +127,7 @@ export class AutogestionSystray extends Component {
     }
 
     open() {
-        browser.open(this.cfg.url, "_blank");
+        browser.open(this.cfg.openUrl, "_blank");
         this.dropdown.close();
     }
 }

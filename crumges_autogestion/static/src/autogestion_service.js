@@ -13,7 +13,14 @@ export function autogestionConfig() {
     if (!url.endsWith("/")) {
         url += "/";
     }
-    return { show: Boolean(cfg.show), url, showStatus: cfg.show_status !== false };
+    // ?from=odoo: si no hay sesión en el Odoo de Producción, Autogestión manda a ingresar ahí y vuelve sola
+    return {
+        show: Boolean(cfg.show),
+        url,
+        openUrl: `${url}?from=odoo`,
+        showStatus: cfg.show_status !== false,
+        neutralized: Boolean(cfg.neutralized),
+    };
 }
 
 export const autogestionService = {
@@ -30,8 +37,8 @@ export const autogestionService = {
                 type: "item",
                 id: "crumges_autogestion",
                 description: _t("Autogestión"),
-                href: cfg.url,
-                callback: () => browser.open(cfg.url, "_blank"),
+                href: cfg.openUrl,
+                callback: () => browser.open(cfg.openUrl, "_blank"),
                 sequence: 45,
             }));
         }

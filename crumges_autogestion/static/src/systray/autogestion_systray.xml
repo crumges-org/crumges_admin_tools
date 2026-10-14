@@ -19,7 +19,7 @@
                         <span t-if="state.data and state.data.reasons.length" t-attf-class="o-crumges-ag-badge o-crumges-ag-badge-{{ state.data.status }}">
                             <t t-esc="state.data.reasons.length"/> <t t-esc="state.data.reasons.length === 1 ? 'aviso' : 'avisos'"/>
                         </span>
-                        <span t-elif="state.data" class="o-crumges-ag-badge o-crumges-ag-badge-ok">Todo en orden</span>
+                        <span t-elif="state.data and state.data.authenticated" class="o-crumges-ag-badge o-crumges-ag-badge-ok">Todo en orden</span>
                     </div>
 
                     <div t-if="state.error" class="o-crumges-ag-error"><t t-esc="state.error"/></div>
@@ -57,6 +57,9 @@
                         </div>
                     </t>
                     <div t-elif="!state.error and cfg.showStatus" class="o-crumges-ag-hint">Cargando…</div>
+                    <div t-if="cfg.neutralized" class="o-crumges-ag-hint">
+                        Esta es una base de ensayos. Autogestión se abre desde Producción: si hace falta, te pide ingresar ahí.
+                    </div>
 
                     <div class="o-crumges-ag-foot">
                         <button class="btn o-crumges-ag-open" t-on-click="open">
